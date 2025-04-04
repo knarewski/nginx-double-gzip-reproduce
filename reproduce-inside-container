@@ -28,3 +28,6 @@ echo ""
 echo "Double ungzipped output"
 cat $RESPONSE_BODY_PATH | gzip -d | gzip -d
 echo ""
+
+echo "Debug log"
+cat /tmp/nginx-debug.log
