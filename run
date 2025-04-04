@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+IMAGE="nginx-double-gzip-reproduce"
+
+docker build --tag $IMAGE .
+
+docker run --rm $IMAGE

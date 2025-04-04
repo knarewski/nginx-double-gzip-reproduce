@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+### Start a server pretending to serve a gzipped asset
+ruby /usr/src/static-asset-server.rb &
+
+### Start nginx server
+nginx-debug -g 'daemon off;' &
+
+### Give them a moment to launch
+sleep 1
+
+
+### Perform the actual experiment
+RESPONSE_BODY_PATH=/tmp/cmd-stdout.txt
+
+curl -v -H 'Accept-Encoding: gzip' http://localhost 1>$RESPONSE_BODY_PATH
+
+sleep 0.1 # Prevents mixing stderr with output below
+
+echo "Raw output:"
+cat /tmp/cmd-stdout.txt
+echo ""
+
+echo "Ungzipped output"
+cat $RESPONSE_BODY_PATH | gzip -d
+echo ""
+
+echo "Double ungzipped output"
+cat $RESPONSE_BODY_PATH | gzip -d | gzip -d
+echo ""
